@@ -48,7 +48,7 @@ namespace KillerApp_KatherineManders
             // 
             foreach (var item in clbTags.Items)
             {
-
+                //AANPASSINGEN WOWOOWOWOWOWOWOWOWOWO
             }
 
             // SELECT * FROM FotoTags FT, Foto F WHERE FT.Foto_ID = F.Foto_ID AND Tag_ID IN (....)
