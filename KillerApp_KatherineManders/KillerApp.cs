@@ -52,6 +52,12 @@ namespace KillerApp_KatherineManders
             }
 
             // SELECT * FROM FotoTags FT, Foto F WHERE FT.Foto_ID = F.Foto_ID AND Tag_ID IN (....)
+            // SELECT fotobron FROM foto where ......... tags dit dit dit dit 
+
+
+            SELECT Foto_ID FROM Foto, FotoTags
+                            where foto_ID.foto == foto_ID.FotoTags
+                            and foto_ID.Fototags = 1 // als het een is bijvoorbeeld
         }
     }
 }
