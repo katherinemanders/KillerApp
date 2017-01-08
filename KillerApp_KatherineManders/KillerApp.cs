@@ -14,15 +14,18 @@ namespace KillerApp_KatherineManders
 {
     public partial class KillerApp : Form
     {
-        //SqlConnection sqlCon = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Tim\Source\Repos\KillerApp\KillerApp_KatherineManders\Database1.mdf;Integrated Security=True");
         SqlConnection sqlCon = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Katherine Manders\documents\visual studio 2015\Projects\KillerApp_KatherineManders\KillerApp_KatherineManders\Database1.mdf;Integrated Security=True");
         // aanmaken van een nieuwe dictiornary waarin de tags komen te staan
         // Dictionary bestaat uit twee waardes
         Dictionary<int, string> tags = new Dictionary<int, string>();
         // nieuwe list waar de geselecteerde foto_ID's in komen te staan
         List<int> Foto_IDs = new List<int>();
+        // nieuwe list waarin de tags komen te staan die bij een foto horen
+        // met die lijst kijken via contains of er een 5 tussen staat -> een 5 is flits
+        List<FotoTags> Tags = new List<FotoTags>();
 
         List<Fotograaf> fotograven = new List<Fotograaf>();
+        int fotoNummer = 0;
 
         public KillerApp()
         {
@@ -31,10 +34,10 @@ namespace KillerApp_KatherineManders
 
         private void KillerApp_Load(object sender, EventArgs e)
         {
-            // open foto bij het begin van de app
-            // nog aanpassen
+            // open foto bij het opstarten van de app en labels vullen
+
             sqlCon.Open();
-            SqlCommand sqlCommand = new SqlCommand("SELECT * FROM Foto", sqlCon);
+            SqlCommand sqlCommand = new SqlCommand("SELECT * FROM Foto, Fotograaf, Film Where foto.Fotograaf_ID = Fotograaf.Fotograaf_ID and foto.Film_ID = film.Film_ID and foto.Foto_ID = 1", sqlCon);
             SqlDataReader sqlReader = sqlCommand.ExecuteReader();
             try
             {
@@ -42,6 +45,18 @@ namespace KillerApp_KatherineManders
                 {
                     Console.WriteLine(sqlReader["FotoBron"]);
                     pbPhoto.LoadAsync(sqlReader["FotoBron"].ToString());
+                    lblFotograaf.Text = (sqlReader["Naam"].ToString());
+                    lblDiafragma.Text = (sqlReader["Diafragma"].ToString());
+                    lblSluiter.Text = "1/" + (sqlReader["Sluitertijd"].ToString());
+                    lblBrand.Text = (sqlReader["Brandpuntafstand"].ToString()) + "mm";
+                    lblDatum.Text = (sqlReader["Datum"].ToString());
+                    lblLocatie.Text = (sqlReader["Locatie"].ToString());
+                    lblFilm.Text = (sqlReader["Soort"].ToString());
+                    lblKleur.Text = (sqlReader["Kleur"].ToString());
+                    lblASA.Text = (sqlReader["ASA"].ToString());
+                    lblFilm.Text = (sqlReader["Soort"].ToString());
+                    lblWebsite.Text = (sqlReader["Website"].ToString());
+                    lblFlits.Text = "ja";
                 }
             }
             finally
@@ -49,7 +64,18 @@ namespace KillerApp_KatherineManders
                 sqlReader.Close();
             }
 
+            //sqlCommand = new SqlCommand( "SELECT COUNT(*) FROM Foto WHERE Fotograaf_ID = (SELECT Fotograaf_ID from Fotograaf WHERE naam LIKE '%" + (sqlReader["Naam"].ToString()) + "%')");
+
+            //using (SqlDataReader areader = sqlCommand.ExecuteReader())
+            //{
+            //    while (areader.Read())
+            //    {
+            //        lblAantalFotos.Text = areader.GetInt32(0).ToString();
+            //    }
+            //}
+
             // het vullen van de checkedlistitems box
+
             sqlCommand = new SqlCommand("SELECT * FROM Tags", sqlCon);
             sqlReader = sqlCommand.ExecuteReader();
             try
@@ -146,22 +172,24 @@ namespace KillerApp_KatherineManders
                         fotograven.Last().Naam = reader.GetString(0);
                     }
                 }
-                // eerste foto toevoegen aan picturbox
-                //sqlCom = "SELECT Fotobron FROM Foto WHERE Fotograaf_ID = " + fotograaf_ID;
-                //sqlCom = "SELECT * FROM Foto WHERE Fotograaf_ID = " + fotograaf_ID;
-                sqlCom = "SELECT * FROM Fotograaf, Foto, Film WHERE fotograaf.Fotograaf_ID = foto.Fotograaf_ID and film.Film_ID = foto.Film_ID and foto_ID = 1";
+
+                // Vullen van label
+                sqlCom = "SELECT * FROM Fotograaf, Foto, Film WHERE fotograaf.Fotograaf_ID = foto.Fotograaf_ID and film.Film_ID = foto.Film_ID and foto.fotograaf_ID = " + fotograaf_ID;
                 sqlCommand = new SqlCommand(sqlCom, sqlCon);
+
+                fotograven.Last().Fotos = new List<string>();
 
                 using (SqlDataReader reader = sqlCommand.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         Console.WriteLine(reader["FotoBron"]);
+                        fotograven.Last().Fotos.Add(reader["FotoBron"].ToString());
                         pbPhoto.LoadAsync(reader["FotoBron"].ToString());
                         lblFotograaf.Text = (reader["Naam"].ToString());
                         lblDiafragma.Text = (reader["Diafragma"].ToString());
                         lblSluiter.Text = "1/" + (reader["Sluitertijd"].ToString());
-                        lblBrand.Text = (reader["Brandpuntafstand"].ToString());
+                        lblBrand.Text = (reader["Brandpuntafstand"].ToString()) + "mm";
                         lblDatum.Text = (reader["Datum"].ToString());
                         lblLocatie.Text = (reader["Locatie"].ToString());
                         lblFilm.Text = (reader["Soort"].ToString());
@@ -169,12 +197,113 @@ namespace KillerApp_KatherineManders
                         lblASA.Text = (reader["ASA"].ToString());
                         lblFilm.Text = (reader["Soort"].ToString());
                         lblWebsite.Text = (reader["Website"].ToString());
+                        // flits nog maken
+                    }
+                }
+                sqlCom = "Select Tag_ID from Fototags WHERE Foto_ID = (SELECT foto_ID from Foto WHERE fotobron = '" + (fotograven.Last().Fotos[fotoNummer % fotograven.Last().Fotos.Count()]) + "'";
+                List<int> Tags = new List<int>();
+                Tags.Clear();
+                using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Tags.Add(reader.GetInt32(0));
                     }
                 }
 
+                if (Tags.Contains(5))
+                {
+                    lblFlits.Text = "ja";
+                }
+                else
+                {
+                    lblFlits.Text = "nee";
+                }
+
+                // weergeven van aantal foto's dat er van de fotograaf in de database staat
+                sqlCom = "SELECT COUNT(*) FROM Foto WHERE Fotograaf_ID = " + fotograaf_ID;
+                sqlCommand = new SqlCommand(sqlCom, sqlCon);
+
+                using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lblAantalFotos.Text = reader.GetInt32(0).ToString();
+                    }
+                }
+
+                sqlCon.Close();
+
+                fotoNummer = fotograven.Last().Fotos.Count - 1;
+            }
+        }
+
+        private void btnVolgende_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                fotoNummer++;
+                pbPhoto.LoadAsync(fotograven.Last().Fotos[fotoNummer % fotograven.Last().Fotos.Count()]);
+
+                // op basis van de gevonden fotobron een query maken die alle labels "ververst"
+
+                string sqlCom = "SELECT * FROM Fotograaf, Foto, Film WHERE fotograaf.Fotograaf_ID = foto.Fotograaf_ID and film.Film_ID = foto.Film_ID and foto.fotobron = '" + (fotograven.Last().Fotos[fotoNummer % fotograven.Last().Fotos.Count()]) + "'";
+
+                sqlCon.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlCom, sqlCon);
+
+                using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lblFotograaf.Text = (reader["Naam"].ToString());
+                        lblDiafragma.Text = (reader["Diafragma"].ToString());
+                        lblSluiter.Text = "1/" + (reader["Sluitertijd"].ToString());
+                        lblBrand.Text = (reader["Brandpuntafstand"].ToString()) + "mm";
+                        lblDatum.Text = (reader["Datum"].ToString());
+                        lblLocatie.Text = (reader["Locatie"].ToString());
+                        lblFilm.Text = (reader["Soort"].ToString());
+                        lblKleur.Text = (reader["Kleur"].ToString());
+                        lblASA.Text = (reader["ASA"].ToString());
+                        lblFilm.Text = (reader["Soort"].ToString());
+                        lblWebsite.Text = (reader["Website"].ToString());
+                        // flits onderstaand
+                    }
+                }
+
+                sqlCom = "Select Tag_ID from Fototags WHERE Foto_ID = (SELECT foto_ID from Foto WHERE fotobron = '" + (fotograven.Last().Fotos[fotoNummer % fotograven.Last().Fotos.Count()]) + "'";
+                List<int> Tags = new List<int>();
+                Tags.Clear();
+                using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Tags.Add(reader.GetInt32(0));
+                    }
+                }
+
+                if (Tags.Contains(5))
+                {
+                    lblFlits.Text = "ja";
+                }
+                else
+                {
+                    lblFlits.Text = "nee";
+                }
 
                 sqlCon.Close();
             }
+
+            catch (Exception)
+            {
+
+
+            }
+
+
+
         }
+
+
     }
 }

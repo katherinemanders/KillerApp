@@ -17,7 +17,6 @@ namespace KillerApp_KatherineManders
         }
 
         private List<string> fotos;
-
         public List<string> Fotos
         {
             get { return fotos; }
@@ -25,7 +24,6 @@ namespace KillerApp_KatherineManders
         }
 
         private int aantalFotos;
-
         public int AantalFotos
         {
             get { return aantalFotos; }

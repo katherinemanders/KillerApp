@@ -61,7 +61,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnumTags.cs" />
     <Compile Include="Fotograaf.cs" />
     <Compile Include="KillerApp.cs">
       <SubType>Form</SubType>
@@ -71,6 +70,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FotoTags.cs" />
     <EmbeddedResource Include="KillerApp.resx">
       <DependentUpon>KillerApp.cs</DependentUpon>
     </EmbeddedResource>

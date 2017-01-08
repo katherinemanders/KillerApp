@@ -56,6 +56,8 @@
             this.lblFlits = new System.Windows.Forms.Label();
             this.lblBrand = new System.Windows.Forms.Label();
             this.lblBrandpunt = new System.Windows.Forms.Label();
+            this.lblfotos = new System.Windows.Forms.Label();
+            this.lblAantalFotos = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,7 +75,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label2.Location = new System.Drawing.Point(362, 203);
+            this.label2.Location = new System.Drawing.Point(362, 220);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 13);
             this.label2.TabIndex = 1;
@@ -83,7 +85,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label3.Location = new System.Drawing.Point(362, 226);
+            this.label3.Location = new System.Drawing.Point(362, 243);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(42, 13);
             this.label3.TabIndex = 2;
@@ -93,7 +95,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label4.Location = new System.Drawing.Point(362, 248);
+            this.label4.Location = new System.Drawing.Point(362, 265);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(38, 13);
             this.label4.TabIndex = 3;
@@ -138,18 +140,19 @@
             // 
             // btnVolgende
             // 
-            this.btnVolgende.Location = new System.Drawing.Point(365, 529);
+            this.btnVolgende.Location = new System.Drawing.Point(414, 518);
             this.btnVolgende.Name = "btnVolgende";
             this.btnVolgende.Size = new System.Drawing.Size(75, 23);
             this.btnVolgende.TabIndex = 8;
             this.btnVolgende.Text = "Volgende";
             this.btnVolgende.UseVisualStyleBackColor = true;
+            this.btnVolgende.Click += new System.EventHandler(this.btnVolgende_Click);
             // 
             // lblLocatie
             // 
             this.lblLocatie.AutoSize = true;
             this.lblLocatie.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.lblLocatie.Location = new System.Drawing.Point(448, 226);
+            this.lblLocatie.Location = new System.Drawing.Point(448, 243);
             this.lblLocatie.Name = "lblLocatie";
             this.lblLocatie.Size = new System.Drawing.Size(35, 13);
             this.lblLocatie.TabIndex = 10;
@@ -159,7 +162,7 @@
             // 
             this.lblWebsite.AutoSize = true;
             this.lblWebsite.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.lblWebsite.Location = new System.Drawing.Point(448, 203);
+            this.lblWebsite.Location = new System.Drawing.Point(448, 220);
             this.lblWebsite.Name = "lblWebsite";
             this.lblWebsite.Size = new System.Drawing.Size(35, 13);
             this.lblWebsite.TabIndex = 11;
@@ -169,7 +172,7 @@
             // 
             this.lblDatum.AutoSize = true;
             this.lblDatum.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.lblDatum.Location = new System.Drawing.Point(448, 248);
+            this.lblDatum.Location = new System.Drawing.Point(448, 265);
             this.lblDatum.Name = "lblDatum";
             this.lblDatum.Size = new System.Drawing.Size(35, 13);
             this.lblDatum.TabIndex = 12;
@@ -332,12 +335,33 @@
             this.lblBrandpunt.TabIndex = 27;
             this.lblBrandpunt.Text = "Brandpunt";
             // 
+            // lblfotos
+            // 
+            this.lblfotos.AutoSize = true;
+            this.lblfotos.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.lblfotos.Location = new System.Drawing.Point(362, 199);
+            this.lblfotos.Name = "lblfotos";
+            this.lblfotos.Size = new System.Drawing.Size(65, 13);
+            this.lblfotos.TabIndex = 29;
+            this.lblfotos.Text = "Aantal foto\'s";
+            // 
+            // lblAantalFotos
+            // 
+            this.lblAantalFotos.AutoSize = true;
+            this.lblAantalFotos.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.lblAantalFotos.Location = new System.Drawing.Point(448, 199);
+            this.lblAantalFotos.Name = "lblAantalFotos";
+            this.lblAantalFotos.Size = new System.Drawing.Size(0, 13);
+            this.lblAantalFotos.TabIndex = 30;
+            // 
             // KillerApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(649, 585);
+            this.Controls.Add(this.lblAantalFotos);
+            this.Controls.Add(this.lblfotos);
             this.Controls.Add(this.lblBrand);
             this.Controls.Add(this.lblBrandpunt);
             this.Controls.Add(this.lblFlits);
@@ -405,6 +429,8 @@
         private System.Windows.Forms.Label lblFlits;
         private System.Windows.Forms.Label lblBrand;
         private System.Windows.Forms.Label lblBrandpunt;
+        private System.Windows.Forms.Label lblfotos;
+        private System.Windows.Forms.Label lblAantalFotos;
     }
 }
 
