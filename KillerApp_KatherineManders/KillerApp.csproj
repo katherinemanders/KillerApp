@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnumTags.cs" />
+    <Compile Include="Fotograaf.cs" />
     <Compile Include="KillerApp.cs">
       <SubType>Form</SubType>
     </Compile>
